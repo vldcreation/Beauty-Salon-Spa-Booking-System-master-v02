@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">salon</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="admin" view="colnames">
+<left>414</left>
+<top>346</top>
+<width>120</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `admin` (
+  `id_admin` int(11) NOT NULL,
+  `nama_admin` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `PASSWORD` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_admin`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="barang" view="colnames">
+<left>81</left>
+<top>178</top>
+<width>128</width>
+<height>137</height>
+<sql_create_table>CREATE TABLE `barang` (
+  `id_barang` int(11) NOT NULL,
+  `nama_barang` varchar(50) DEFAULT NULL,
+  `harga_barang` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_barang`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="jasa" view="colnames">
+<left>1008</left>
+<top>26</top>
+<width>87</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `jasa` (
+  `id_jasa` int(11) NOT NULL,
+  `nama` varchar(50) DEFAULT NULL,
+  `harga` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_jasa`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="member" view="colnames">
+<left>561</left>
+<top>55</top>
+<width>114</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `member` (
+  `id_member` int(11) NOT NULL,
+  `NAME` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `PASSWORD` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_member`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="informasi" view="colnames">
+<left>558</left>
+<top>404</top>
+<width>116</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `informasi` (
+  `id_informasi` int(11) NOT NULL,
+  `judul` varchar(100) NOT NULL,
+  `id_admin` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_informasi`),
+  KEY `id_admin` (`id_admin`),
+  CONSTRAINT `informasi_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id_admin`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="lihatinformasi" view="colnames">
+<left>699</left>
+<top>306</top>
+<width>116</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `lihatinformasi` (
+  `id_member` int(11) NOT NULL,
+  `id_informasi` int(11) NOT NULL,
+  KEY `id_member` (`id_member`),
+  KEY `id_informasi` (`id_informasi`),
+  CONSTRAINT `lihatinformasi_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`),
+  CONSTRAINT `lihatinformasi_ibfk_2` FOREIGN KEY (`id_informasi`) REFERENCES `informasi` (`id_informasi`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="booking" view="colnames">
+<left>706</left>
+<top>7</top>
+<width>127</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `booking` (
+  `Kode_booking` int(11) NOT NULL,
+  `id_member` int(11) NOT NULL,
+  PRIMARY KEY (`Kode_booking`),
+  KEY `id_member` (`id_member`),
+  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="detail_booking" view="colnames">
+<left>856</left>
+<top>128</top>
+<width>127</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `detail_booking` (
+  `Kode_booking` int(11) NOT NULL,
+  `id_jasa` int(11) NOT NULL,
+  `Hari` date DEFAULT NULL,
+  `LamaBooking` time DEFAULT NULL,
+  KEY `Kode_booking` (`Kode_booking`),
+  KEY `id_jasa` (`id_jasa`),
+  CONSTRAINT `detail_booking_ibfk_1` FOREIGN KEY (`Kode_booking`) REFERENCES `booking` (`Kode_booking`),
+  CONSTRAINT `detail_booking_ibfk_2` FOREIGN KEY (`id_jasa`) REFERENCES `jasa` (`id_jasa`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="beli" view="colnames">
+<left>397</left>
+<top>178</top>
+<width>141</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `beli` (
+  `Kode_pembelian` int(11) NOT NULL,
+  `id_member` int(11) NOT NULL,
+  PRIMARY KEY (`Kode_pembelian`),
+  KEY `id_member` (`id_member`),
+  CONSTRAINT `beli_ibfk_1` FOREIGN KEY (`id_member`) REFERENCES `member` (`id_member`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="detail_beli" view="colnames">
+<left>233</left>
+<top>54</top>
+<width>141</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `detail_beli` (
+  `Kode_pembelian` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  KEY `Kode_pembelian` (`Kode_pembelian`),
+  KEY `id_barang` (`id_barang`),
+  CONSTRAINT `detail_beli_ibfk_1` FOREIGN KEY (`Kode_pembelian`) REFERENCES `beli` (`Kode_pembelian`),
+  CONSTRAINT `detail_beli_ibfk_2` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
